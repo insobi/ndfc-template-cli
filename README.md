@@ -5,11 +5,11 @@ A Command Line Interface designed for listing and downloading NDFC Templates fro
 
 Clone the repo
 ```bash
-git clone https://github.com/insobi/ndfc-template-downloader.git
+git clone https://github.com/insobi/ndfc-template-cli.git
 ```
 Go to your project folder
 ```bash
-cd ndfc-template-downloader
+cd ndfc-template-cli
 ```
 
 Install dependencies
