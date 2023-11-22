@@ -30,7 +30,7 @@ Display how to use
 ```bash
 Usage: ndfc-template.py [OPTIONS] COMMAND [ARGS]...
 
-  Command Line Interface for managing Cisco NDFC Tempalte
+  Command Line Interface for managing Cisco NDFC Template
 
 Options:
   --help  Show this message and exit.
