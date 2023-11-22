@@ -31,6 +31,7 @@ Display how to use
 Usage: ndfc-template.py [OPTIONS] COMMAND [ARGS]...
 
   Command Line Interface for managing Cisco NDFC Tempalte
+
 Options:
   --help  Show this message and exit.
 
