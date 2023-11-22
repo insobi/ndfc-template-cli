@@ -60,7 +60,7 @@ class ndfcTemplate(object):
 @click.pass_context
 def ndfc_template(ctx):
     '''
-    Retrieve GitLab project data and retry pripeline jobs
+    Command Line Interface for managing Cisco NDFC Template
     '''
     if "NDFC_USERNAME" not in os.environ or "NDFC_PASSWORD" not in os.environ or "ND_URL" not in os.environ:
         click.secho(
@@ -122,18 +122,6 @@ def get(obj, name, all, path):
         templates = []
         for template in obj.template_list():
             obj.get(template['name'])
-
-@click.command()
-@click.pass_obj
-@click.option("--name", type=str, required=False)
-@click.option("--file", type=str, required=True, default=".")
-def put(obj, name, file) -> None:
-    '''Upload a template to NDFC'''
-    if not name:
-        print("Error: Command 'put' requires arguments: --name")
-        exit(1)
-    else:
-        obj.put(name, file)
 
 ndfc_template.add_command(list)
 ndfc_template.add_command(get)
