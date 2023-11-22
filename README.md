@@ -30,8 +30,7 @@ Display how to use
 ```bash
 Usage: ndfc-template.py [OPTIONS] COMMAND [ARGS]...
 
-  Retrieve GitLab project data and retry pripeline jobs
-
+  Command Line Interface for managing Cisco NDFC Tempalte
 Options:
   --help  Show this message and exit.
 
