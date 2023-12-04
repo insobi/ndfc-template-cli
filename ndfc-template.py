@@ -11,14 +11,16 @@ class ndfcTemplate(object):
         self.base_url = ""
         self.username = ""
         self.password = ""
+        self.domain = ""
         self.ssl_verify = False
         self.headers = {"Content-Type": "text/plain"}
 
-    def login(self, user, pw, url):
+    def login(self, user, pw, url, domain='local'):
         self.base_url = url
         self.username = user
         self.password = pw
-        payload = f'{{ "userName": "{self.username}", "userPasswd": "{self.password}", "domain": "local" }}'
+        self.domain = domain
+        payload = f'{{ "userName": "{self.username}", "userPasswd": "{self.password}", "domain": "{self.domain}" }}'
         response = requests.request(
             'POST',
             f'{self.base_url}/login',
@@ -26,7 +28,11 @@ class ndfcTemplate(object):
             data=payload,
             verify=self.ssl_verify
         )
-        self.headers["Cookie"] = f'AuthCookie={response.json()["jwttoken"]}'
+        if response.status_code == 200:
+            self.headers["Cookie"] = f'AuthCookie={response.json()["jwttoken"]}'
+        else:
+            print("Login Failed.")
+            exit(1)
 
     def list(self, name:str) -> list:
         template_list = []
@@ -39,7 +45,6 @@ class ndfcTemplate(object):
         if response.status_code == 200:
             if name == '':
                 for item in response.json():
-                    print(item)
                     template_list.append(item)
             else:
                 template_list.append(response.json())
@@ -70,8 +75,12 @@ def ndfc_template(ctx):
         exit(1)
 
     obj = ndfcTemplate()
-    obj.login(user=os.environ['NDFC_USERNAME'],
-              pw=os.environ['NDFC_PASSWORD'], url=os.environ['ND_URL'])
+    obj.login(
+        user=os.environ['NDFC_USERNAME'],
+        pw=os.environ['NDFC_PASSWORD'],
+        url=os.environ['ND_URL'],
+        domain=os.environ['ND_DOMAIN']
+    )
     ctx.obj = obj
 
 @click.command()
