@@ -3,6 +3,7 @@ import os
 from urllib3.exceptions import InsecureRequestWarning
 import click
 from prettytable import PrettyTable
+import json
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -13,7 +14,7 @@ class ndfcTemplate(object):
         self.password = ""
         self.domain = ""
         self.ssl_verify = False
-        self.headers = {"Content-Type": "text/plain"}
+        self.headers = {"Content-Type": "application/json"}
 
     def login(self, user, pw, url, domain='local'):
         self.base_url = url
@@ -31,10 +32,10 @@ class ndfcTemplate(object):
         if response.status_code == 200:
             self.headers["Cookie"] = f'AuthCookie={response.json()["jwttoken"]}'
         else:
-            print("Login Failed.")
+            print(f"{response.text}")
             exit(1)
 
-    def list(self, name:str) -> list:
+    def list(self, name:str="") -> list:
         template_list = []
         response = requests.request(
             "GET",
@@ -129,8 +130,8 @@ def get(obj, name, all, path):
         obj.get(name, path)
     elif all:
         templates = []
-        for template in obj.template_list():
-            obj.get(template['name'])
+        for template in obj.list():
+            obj.get(template['name'], path)
 
 ndfc_template.add_command(list)
 ndfc_template.add_command(get)
